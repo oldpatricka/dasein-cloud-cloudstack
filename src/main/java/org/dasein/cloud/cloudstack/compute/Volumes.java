@@ -927,11 +927,13 @@ public class Volumes extends AbstractVolumeSupport {
         volume.setProviderRegionId(provider.getContext().getRegionId());
         volume.setProviderDataCenterId(provider.getContext().getRegionId());
 
-        volume.setDeviceId(deviceNumber);
+        Platform platform = Platform.guess(volume.getName() + " " + volume.getDescription());
+
+        volume.setDeviceId(toDeviceID(deviceNumber, platform.isWindows()));
         volume.setRootVolume(root);
         volume.setType(VolumeType.HDD);
         if( root ) {
-            volume.setGuestOperatingSystem(Platform.guess(volume.getName() + " " + volume.getDescription()));
+            volume.setGuestOperatingSystem(platform);
         }
         return volume;
     }
